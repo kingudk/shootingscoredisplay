@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>DIF Turnering</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DIF turnering">
+
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+
+    <style type="text/css">
+        .result-table {font-size: 8pt;}
+    </style>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  
+  <body>
+  
+    <div class="navbar navbar-inverse navbar-static-top">
+        <div class="navbar-inner">
+            <a class="brand" href="#">DIF turnering</a>
+            <ul class="nav" id="matches-nav">
+                <li class="active"><a href="#">Oversigt</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="container-fluid">
+       
+        <div id="match-overview"> </div>
+
+        <div class="row-fluid">
+            <div class="span12" id="match1"></div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12" id="match2"></div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12" id="match3"></div>
+        </div>       
+    </div>
+    <script type="text/javascript" src="jquery/jquery-1.8.3.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script  type="text/javascript" src="bbq/jquery.ba-bbq.min.js"> </script>
+    
+   <script type="text/javascript">
+    
+        var DIFMatch;
+        var lanesData;
+        var autoRefresh;
+    
+        function getMatches() {
+            $.getJSON('scoring/DIF/getMatches', {}, buildMenu);
+        }
+        
+        function getMatch() {
+            if($.deparam.fragment().match != null) {
+                url = 'scoring/DIF/getMatch?matchID=' + $.deparam.fragment().match;
+                $.getJSON(url, {}, setMatch);
+            }
+        }
+    
+        function buildMenu(items) {
+            var menuEntries;
+            if($.deparam.fragment().match == null) {
+                menuEntries = '<li class="active">';
+            } else {
+                menuEntries = '<li>';
+            }
+            menuEntries += '<a href="#">Oversigt</a><li>';
+                
+            for(var i = 0; i<items.length; i++) {
+                if(items[i].matchID == $.deparam.fragment().match) {
+                    menuEntries += '<li class="active">';
+                } else {
+                    menuEntries += '<li>';
+                }
+                menuEntries += '<a href="#match=' + items[i].matchID + '">' + items[i].matchName + '</a></li>';
+            }
+            
+            $("#matches-nav").html(menuEntries);
+        }
+
+        function setMatch(data) {
+            DIFMatch = new Object();
+            DIFMatch.place = data.place;
+            DIFMatch.date = data.date;
+            DIFMatch.team1 = data.team1;
+            DIFMatch.team2 = data.team2;
+            DIFMatch.team1lanes = data.team1lanes;
+            DIFMatch.team2lanes = data.team2lanes;
+            lanesData = new Object();   
+            for(var i = 0; i < data.team1lanes.length; i++) {
+                laneData = new Object();
+                laneData.name = 'Bane ' + data.team1lanes[i];
+                laneData.shots = {};
+                lanesData[data.team1lanes[i]] = laneData;
+            }
+            for(var i = 0; i < data.team2lanes.length; i++) {
+                laneData = new Object();
+                laneData.name = 'Bane ' + data.team2lanes[i];
+                laneData.shots = {};
+                lanesData[data.team2lanes[i]] = laneData;
+            }
+            refreshView();
+        }
+
+        function showOverview() {
+            var overview = '';
+            if(DIFMatch != null) {
+                overview = '<div class="row">'; 
+                overview += '<div class="span4">';
+                overview += '<h2>' + DIFMatch.team1 + ' imod ' + DIFMatch.team2 + '</h2>';
+                overview += '<div class="row"><div class="span4"> Sted: ' + DIFMatch.place + '<br>';
+                overview += 'Dato: ' + DIFMatch.date + '</div></div>';
+                overview += '</div></div>';
+            }
+            $("#match-overview").html(overview);
+        }
+        
+        function updateShooterName(laneID, data) {
+            if(data != null) {
+                lanesData[laneID].name = data;
+            }
+        }
+        
+        // Add callback with closure (see: http://stackoverflow.com/questions/6129145/pass-extra-parameter-to-jquery-getjson-success-callback-function)
+        function getShooterNamesCallback(laneID) {
+            return function(data) {
+                updateShooterName(laneID, data);
+            }
+        }
+        
+        function getShooterNames() {
+            url = 'scoring/DataStore/getShooterName?laneID=';
+            for(var i = 0; i < DIFMatch.team2lanes.length; i++) {
+                var id = DIFMatch.team2lanes[i];
+                $.getJSON(url + id, {}, getShooterNamesCallback(id));
+            }
+            for(var i = 0; i < DIFMatch.team1lanes.length; i++) {
+                var id = DIFMatch.team1lanes[i];
+                $.getJSON(url + id, {}, getShooterNamesCallback(id));
+            }
+        }
+        
+        function updateShots(laneID, data) {
+            lanesData[laneID].shots = data;
+        }
+        
+        function getShotsCallback(laneID) {
+            return function(data) {
+                updateShots(laneID, data);
+            }
+        }
+        
+        function getShots() {
+            url = 'scoring/DataStore/getCompetitionShots?laneID=';
+            for(var i = 0; i < DIFMatch.team2lanes.length; i++) {
+                var id = DIFMatch.team2lanes[i];
+                $.getJSON(url + id, {}, getShotsCallback(id));
+            }
+            for(var i = 0; i < DIFMatch.team1lanes.length; i++) {
+                var id = DIFMatch.team1lanes[i];
+                $.getJSON(url + id, {}, getShotsCallback(id));
+            }
+        }
+        
+        function buildShooterRow(shooter) {
+            row = '<tr> <td colspan="9" style="font-size:10pt"><strong>' + shooter + '</strong></td>';
+            row += '<td>10</td> <td colspan="9"></td> <td>20</td> <td colspan="9"></td>';
+            row += '<td>30</td> <td colspan="9"></td> <td>40</td> <td colspan="9"></td>';
+            row += '<td>50</td> <td colspan="9"></td> <td>60</td> ';
+            row += '<td><strong>Sum</strong></td> <td>Prognose</td> </tr>'; 
+            return row;   
+        }
+        
+        function buildResultRow(shots) {
+            row = '<tr>';
+            var total = 0;
+            var prognosis = 0;
+            for(var i = 0; i< 60; i++) {
+                if(shots != null && shots[i] != null) {
+                    total += shots[i];
+                    row += '<td>' + shots[i] + '</td>';
+                } else {
+                    row += '<td>&nbsp;</td>';
+                }
+            }
+            row += '<td>' + total + '</td>';
+            if(shots != null && shots.length > 0) {
+                prognosis = (total/shots.length)*60;
+            }
+            row += '<td>' + Math.floor(prognosis) + '</td>';
+            row += '</tr>';
+            return row;
+        }
+        
+        function showMatchDetails(matchNumber) {
+            var content = '';
+            var divID = "#match" + matchNumber;
+            if(lanesData != null) {
+                shooter1 = lanesData[DIFMatch.team1lanes[matchNumber-1]];
+                shooter2 = lanesData[DIFMatch.team2lanes[matchNumber-1]];
+                
+                content =  '<h2> Kamp ' + matchNumber + '</h2>';
+                content += '<table class="table table-condensed table-bordered result-table">';
+                content += buildShooterRow(shooter1.name);
+                content += buildResultRow(shooter1.shots);
+                content += buildResultRow(shooter2.shots);
+                content += buildShooterRow(shooter2.name);
+                content += '</table> ';
+            }
+            $(divID).html(content);
+        }
+        
+        function refreshView() {
+            showOverview();
+            showMatchDetails(1);
+            showMatchDetails(2);
+            showMatchDetails(3);
+        }
+        
+        function refresh() {
+            refreshView();
+            getShooterNames();
+            getShots();
+        }
+        
+        function hashChanged(e) {
+            clearInterval(autoRefresh);
+            if(location.hash == "") {
+                DIFMatch = null;
+                lanesData = null;
+            } else {
+                autoRefresh = setInterval(refresh, 2000);
+            }
+            getMatches();
+            getMatch();
+            refreshView();
+        }
+        
+        $(document).ready(function() {
+            $(window).bind('hashchange', hashChanged);
+            hashChanged();
+        })
+        
+    </script> 
+    
+  </body>
+</html>
