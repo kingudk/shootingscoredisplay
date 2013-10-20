@@ -12,8 +12,8 @@ CREATE TABLE shooters (
     FOREIGN KEY (club) REFERENCES clubs(id)
 );
 
-CREATE TABLE competition (
-    id INT NOT NULL AS IDENTITY PRIMARY KEY,
+CREATE TABLE competitions (
+    id INT NOT NULL PRIMARY KEY,
     shooter INT NOT NULL,
     
     FOREIGN KEY (shooter) REFERENCES shooters(id)
@@ -28,9 +28,10 @@ CREATE TABLE shots (
     value INT NOT NULL,
     decimalvalue FLOAT NOT NULL,
     type INT NOT NULL,
-    competitionid INT NOT NULL,
+    competitionid INT,
+    fireingpoint INT,
     
-    FOREIGN KEY (competitionid) REFERENCES competition(id),
+    --FOREIGN KEY (competitionid) REFERENCES competition(id),
     UNIQUE(competitionid, time)
 );
 
@@ -38,6 +39,7 @@ CREATE TABLE shots (
 CREATE TABLE matches (
     id INT NOT NULL GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
+    state INT DEFAULT 0,
     competition1a INT NOT NULL,
     competition1b INT NOT NULL,
     competition2a INT NOT NULL,
@@ -45,11 +47,11 @@ CREATE TABLE matches (
     competition3a INT NOT NULL,
     competition3b INT NOT NULL,
     
-    FOREIGN KEY (competition1a) REFERENCES competition(id),
-    FOREIGN KEY (competition1b) REFERENCES competition(id),
-    FOREIGN KEY (competition2a) REFERENCES competition(id),
-    FOREIGN KEY (competition2b) REFERENCES competition(id),
-    FOREIGN KEY (competition3a) REFERENCES competition(id),
-    FOREIGN KEY (competition3b) REFERENCES competition(id)
+    FOREIGN KEY (competition1a) REFERENCES competitions(id),
+    FOREIGN KEY (competition1b) REFERENCES competitions(id),
+    FOREIGN KEY (competition2a) REFERENCES competitions(id),
+    FOREIGN KEY (competition2b) REFERENCES competitions(id),
+    FOREIGN KEY (competition3a) REFERENCES competitions(id),
+    FOREIGN KEY (competition3b) REFERENCES competitions(id)
 );
 

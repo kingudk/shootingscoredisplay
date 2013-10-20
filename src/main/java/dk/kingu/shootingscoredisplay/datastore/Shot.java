@@ -15,7 +15,7 @@ public class Shot {
 	public Shot(ShotEvent event) {
 		XCoord = event.getXcoord();
 		YCoord = event.getYcoord();
-		seqNumber = event.getScequenceNumber();
+		seqNumber = event.getSequenceNumber();
 		shotValue = event.getShotValue();
 		decimalValue = event.getDecimalShotValue();
 		logTimeStamp = event.getLogTimeStamp();

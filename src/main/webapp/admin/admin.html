@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>DIF turneringsadministration</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DIF turnering">
+
+    <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  
+  <body>
+  
+    <div class="navbar navbar-inverse navbar-static-top">
+        <div class="navbar-inner">
+            <a class="brand" href="#">DIF turnering</a>
+        </div>
+    </div>
+    
+   <div class="container-fluid">
+
+    <div class="row-fluid">
+            <div class="span12">
+                <div class="row-fluid">
+                    <div class="span6">
+                        <h2>Tilføj klub:</h2>
+                        <div class="row-fluid">
+                            <div class="input-append">
+                                <input id="clubNameInput" class="input-medium span3" type="text" placeholder="Klub navn">
+                                <button id="addClubBtn" class="btn" type="button">Tilføj</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span6">
+                        <div class="row-fluid">
+                            <h2>Eksisterende klubber:</h2>
+                        </div>
+                        <div class="row-fluid">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr><th>Klubnavn</th></tr>
+                                </thead>
+                                <tbody id="clubTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="row-fluid">
+                    <div class="span6">
+                        <h2>Tilføj skytte:</h2>
+                        <div class="row-fluid">
+                            <form class="form-inline">
+                                <input id="addShooterShooterName" type="text" class="input-medium" placeholder="Skytte navn">
+                                <select class="span3" id="addShooterSelectClub">
+                                    <option value="2">club name</option>
+                                </select>
+                                <button id="addShooterBtn" class="btn" type="button">Tilføj</button>
+                            </form> 
+                        </div>
+                    </div>
+                    <div class="span6">
+                        <div class="row-fluid">
+                            <h2>Eksisterende skytter:</h2>
+                        </div>
+                        <div class="row-fluid">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Skyttenavn</th>
+                                        <th>Klubnavn</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="shootersTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       <hr>
+       <div class="row-fluid">
+            <div class="span12">
+                <div class="row-fluid">
+                    <div class="span6">
+                        <h2>Tilføj konkurrence:</h2>
+                        <div class="row-fluid">
+                            <form class="form-inline">
+                                <input id="addCompetitionID" type="text" class="input-medium" placeholder="Konkurrence ID">
+                                <select class="span3" id="addCompetitionSelectShooter">
+                                    <option value="2">shooter (club name)</option>
+                                </select>
+                                <button id="addCompetitionBtn" class="btn" type="button">Tilføj</button>
+                            </form> 
+                        </div>
+                    </div>
+                    <div class="span6">
+                        <div class="row-fluid">
+                            <h2>Eksisterende konkurrencer:</h2>
+                        </div>
+                        <div class="row-fluid">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Konkurrence ID</th>
+                                        <th>Skyttenavn</th>
+                                        <th>Klubnavn</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="competitionTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       <hr>
+        <div class="row-fluid">  
+            <div class="span12"> 
+                <div class="row-fluid">
+                    <div class="span6">  
+                        <h2>Tilføj kamp:</h2>
+                        <div class="row-fluid">
+                            <input id="addMatchMatchName"type="text" class="input-medium" placeholder="Kamp navn">
+                            <div class="row-fluid">
+                                <div class="span6"> 
+                                    Team A 
+                                    <div class="row-fluid">
+                                        <select class="span3-fluid" id="teamAcompetion1Select">
+                                            <option value="2">competitionID (shooter name (clubname))</option>
+                                        </select>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <select class="span3-fluid" id="teamAcompetion2Select">
+                                            <option value="2">competitionID (shooter name (clubname))</option>
+                                        </select>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <select class="span3-fluid" id="teamAcompetion3Select">
+                                            <option value="2">competitionID (shooter name (clubname))</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="span6">
+                                    Team B 
+                                    <div class="row-fluid">
+                                        <select class="span3-fluid" id="teamBcompetion1Select">
+                                            <option value="2">competitionID (shooter name (clubname))</option>
+                                        </select>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <select class="span3-fluid" id="teamBcompetion2Select">
+                                            <option value="2">competitionID (shooter name (clubname))</option>
+                                        </select>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <select class="span3-fluid" id="teamBcompetion3Select">
+                                            <option value="2">competitionID (shooter name (clubname))</option>
+                                        </select>
+                                    </div>
+                                </div>    
+                                <button id="addMatchBtn" class="btn" type="button">Tilføj</button> 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span6">
+                        <div class="row-fluid">
+                            <h2>Eksisterende kampe:</h2>
+                        </div>
+                        <div class="row-fluid">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Kampnavn</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="matchTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="../jquery/jquery-1.8.3.min.js"></script>
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+    
+    <script type="text/javascript">
+    
+    var clubs = new Array();
+    var shooters = new Array();
+    var matches = new Array();
+    var competitions = new Array();
+    
+        function loadClubs() {
+            var clubsUrl = '../rest/public/getClubs/';
+            $.get(clubsUrl, {}, function(data) {
+                clubs = data.slice();
+            }).always(function() {
+                $("#clubTableBody").empty();
+                $("#addShooterSelectClub").empty();
+                for(var i = 0; i<clubs.length; i++) {
+                    $("#clubTableBody").append("<tr><td>" + clubs[i] + "</td></tr>");
+                    $("#addShooterSelectClub").append("<option>" + clubs[i] + "</option>");
+                }
+            });
+        }
+    
+        function addClub() {
+            var addClubUrl = '../rest/admin/addClub/';
+            $.post(
+                addClubUrl, 
+                {clubName: $("#clubNameInput").val()}, 
+                function(j) {loadClubs();}, 
+                'json'
+            ).fail(function() {
+                alert("Kunne ikke oprette klub.");
+            });
+        }
+          
+          
+        function loadShooters() {
+            var shootersUrl = '../rest/public/getShooters/';
+            $.get(shootersUrl, {}, function(data) {
+                shooters = data.slice();
+            }).always(function() {
+                $("#shootersTableBody").empty();
+                $("#addCompetitionSelectShooter").empty();
+                for(var i = 0; i<shooters.length; i++) {
+                    $("#shootersTableBody").append("<tr><td>" + shooters[i].shooterName + "</td><td>" + shooters[i].clubName + "</td></tr>");
+                    $("#addCompetitionSelectShooter").append("<option value='" + shooters[i].id + "'>" + shooters[i].shooterName + " (" + shooters[i].clubName + ")</option>");
+                }
+            });
+        }
+        
+        function addShooter() {
+            var addShooterUrl = '../rest/admin/addShooter/';
+            $.post(
+                addShooterUrl,
+                {shooterName: $("#addShooterShooterName").val(),
+                 clubName: $("#addShooterSelectClub").val()},
+                function(j) {loadShooters();},
+                'json'
+            ).fail(function() {
+                alert("Kunne ikke oprette skytte.");
+            });
+        }  
+        
+        function loadCompetitions() {
+            var competitionsUrl = '../rest/public/getCompetitions';
+            $.get(competitionsUrl, {}, function(data) {
+                competitions = data.slice();
+            }).always(function() {
+                $("#competitionTableBody").empty();
+                $("#teamAcompetion1Select").empty();
+                $("#teamAcompetion2Select").empty();
+                $("#teamAcompetion3Select").empty();
+                $("#teamBcompetion1Select").empty();
+                $("#teamBcompetion2Select").empty();
+                $("#teamBcompetion3Select").empty();
+                for(var i = 0; i<competitions.length; i++) {
+                    $("#competitionTableBody").append("<tr><td>" + competitions[i].competitionID + "</td>"
+                        + "<td>" + competitions[i].shooterName + "</td><td>" + competitions[i].clubName + "</td></tr>");
+                    var competitionSelect = "<option value=\"" + competitions[i].competitionID + "\">" 
+                        + competitions[i].competitionID + "(" +competitions[i].shooterName + " (" + competitions[i].clubName + "))</option>";
+                    $("#teamAcompetion1Select").append(competitionSelect);
+                    $("#teamAcompetion2Select").append(competitionSelect);
+                    $("#teamAcompetion3Select").append(competitionSelect);
+                    $("#teamBcompetion1Select").append(competitionSelect);
+                    $("#teamBcompetion2Select").append(competitionSelect);
+                    $("#teamBcompetion3Select").append(competitionSelect);
+                }
+            });
+        }
+        
+        function addCompetition() {
+            var addCompetitionUrl = '../rest/admin/addCompetition';
+            $.post(
+                addCompetitionUrl,
+                {competitionID: $("#addCompetitionID").val(),
+                 shooterID: $("#addCompetitionSelectShooter").val()},
+                function(j) {loadShooters();},
+                'json'
+            ).fail(function() {
+                alert("Kunne ikke oprette konkurrence.");
+            });
+        }  
+        
+        
+        function loadMatches() {
+            var matchesUrl = '';
+            $.get(matchesUrl, {}, function(data) {
+                matches = data.slice();
+            }).always(function() {
+                $("#matchTableBody").empty();
+                for(var i = 0; i<matches.length; i++) {
+                    ("#matchTableBody").append("<tr><td>" + matches[i].matchName + "</td></tr>");
+                }
+            });
+        }
+        
+        function addMatch() {
+            var addMatchUrl = '';
+            $.post(
+                addMatchUrl,
+                {matchName: $("#addMatchMatchName").val(),
+                teamAcompetition1: $("#teamAcompetition1Select").val(),
+                teamAcompetition2: $("#teamAcompetition2Select").val(),
+                teamAcompetition3: $("#teamAcompetition3Select").val(),
+                teamBcompetition1: $("#teamBcompetition1Select").val(),
+                teamBcompetition2: $("#teamBcompetition2Select").val(),
+                teamBcompetition3: $("#teamBcompetition3Select").val(),},
+                function(j) {loadMatches();},
+                'json'
+            ).fail(function() {
+                alert("Kunne ikke oprette kamp.");
+            });
+        }
+        
+        $(document).ready(function() {
+            $("#addClubBtn").click(function(event) {event.preventDefault(); addClub(); });
+            $("#addShooterBtn").click(function(event) {event.preventDefault(); addShooter(); });
+            $("#addCompetitionBtn").click(function(event) {event.preventDefault(); addCompetition(); });
+            $("#addMatchBtn").click(function(event) {event.preventDefault(); addMatch(); });
+        })
+    </script>
+
+  </body>
+</html>
+
+
+
+
+
+
