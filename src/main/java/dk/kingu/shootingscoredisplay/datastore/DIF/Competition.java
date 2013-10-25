@@ -1,5 +1,8 @@
 package dk.kingu.shootingscoredisplay.datastore.DIF;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class Competition {
 
 	private int competitionID;

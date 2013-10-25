@@ -176,6 +176,8 @@
                                 <thead>
                                     <tr>
                                         <th>Kampnavn</th>
+                                        <th>Team A (konkurrencer)</th>
+                                        <th>Team B (konkurrencer)</th>
                                     </tr>
                                 </thead>
                                 <tbody id="matchTableBody"></tbody>
@@ -265,9 +267,9 @@
                 $("#teamBcompetion3Select").empty();
                 for(var i = 0; i<competitions.length; i++) {
                     $("#competitionTableBody").append("<tr><td>" + competitions[i].competitionID + "</td>"
-                        + "<td>" + competitions[i].shooterName + "</td><td>" + competitions[i].clubName + "</td></tr>");
+                        + "<td>" + competitions[i].shooter.shooterName + "</td><td>" + competitions[i].shooter.clubName + "</td></tr>");
                     var competitionSelect = "<option value=\"" + competitions[i].competitionID + "\">" 
-                        + competitions[i].competitionID + "(" +competitions[i].shooterName + " (" + competitions[i].clubName + "))</option>";
+                        + competitions[i].competitionID + "(" +competitions[i].shooter.shooterName + " (" + competitions[i].shooter.clubName + "))</option>";
                     $("#teamAcompetion1Select").append(competitionSelect);
                     $("#teamAcompetion2Select").append(competitionSelect);
                     $("#teamAcompetion3Select").append(competitionSelect);
@@ -293,13 +295,24 @@
         
         
         function loadMatches() {
-            var matchesUrl = '';
+            var matchesUrl = '../rest/public/getMatches';
             $.get(matchesUrl, {}, function(data) {
                 matches = data.slice();
             }).always(function() {
                 $("#matchTableBody").empty();
                 for(var i = 0; i<matches.length; i++) {
-                    ("#matchTableBody").append("<tr><td>" + matches[i].matchName + "</td></tr>");
+                    var html = "<tr><td>" + matches[i].matchName + "</td>";
+                    html += "<td>";
+                    for(var j = 0; i<matches[i].teamA.length; j++) {
+                        html += " - " + matches[i].teamA[j] + "<br>";
+                    }
+                    html += "</td><td>";
+                    for(var j = 0; i<matches[i].teamB.length; j++) {
+                        html += " - " + matches[i].teamB[j] + "<br>";
+                    }
+                    html += "</td></tr>";
+                    
+                    ("#matchTableBody").append(html);
                 }
             });
         }

@@ -2,6 +2,9 @@ package dk.kingu.shootingscoredisplay.datastore.DIF;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class Match {
 	
 	private String name;

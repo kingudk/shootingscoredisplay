@@ -8,6 +8,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import dk.kingu.shootingscoredisplay.datastore.DIF.Competition;
+import dk.kingu.shootingscoredisplay.datastore.DIF.Match;
 import dk.kingu.shootingscoredisplay.datastore.DIF.Shooter;
 
 @Path("/public")
@@ -38,5 +39,12 @@ public class TournamentReadAccess {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Competition> getCompetitions() {
 		return service.getTournamentDAO().getCompetitions();
+	}
+	
+	@GET
+	@Path("/getMatches")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Match> getMatches() {
+		return service.getTournamentDAO().getMatches();
 	}
 }
