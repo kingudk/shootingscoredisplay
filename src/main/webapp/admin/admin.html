@@ -218,7 +218,9 @@
             $.post(
                 addClubUrl, 
                 {clubName: $("#clubNameInput").val()}, 
-                function(j) {loadClubs();}, 
+                function(j) {
+                    $("#clubNameInput").empty();
+                    loadClubs();}, 
                 'json'
             ).fail(function() {
                 alert("Kunne ikke oprette klub.");
@@ -246,7 +248,9 @@
                 addShooterUrl,
                 {shooterName: $("#addShooterShooterName").val(),
                  clubName: $("#addShooterSelectClub").val()},
-                function(j) {loadShooters();},
+                function(j) {
+                    $("#addShooterShooterName").empty();
+                    loadShooters();},
                 'json'
             ).fail(function() {
                 alert("Kunne ikke oprette skytte.");
@@ -286,7 +290,9 @@
                 addCompetitionUrl,
                 {competitionID: $("#addCompetitionID").val(),
                  shooterID: $("#addCompetitionSelectShooter").val()},
-                function(j) {loadShooters();},
+                function(j) {
+                    $("#addCompetitionID").empty();
+                    loadShooters();},
                 'json'
             ).fail(function() {
                 alert("Kunne ikke oprette konkurrence.");
@@ -328,7 +334,9 @@
                 teamBcompetition1: $("#teamBcompetition1Select").val(),
                 teamBcompetition2: $("#teamBcompetition2Select").val(),
                 teamBcompetition3: $("#teamBcompetition3Select").val(),},
-                function(j) {loadMatches();},
+                function(j) {
+                    $("#addMatchMatchName").empty();
+                    loadMatches();},
                 'json'
             ).fail(function() {
                 alert("Kunne ikke oprette kamp.");
@@ -336,10 +344,16 @@
         }
         
         $(document).ready(function() {
+            // Hook-up buttons to action functions
             $("#addClubBtn").click(function(event) {event.preventDefault(); addClub(); });
             $("#addShooterBtn").click(function(event) {event.preventDefault(); addShooter(); });
             $("#addCompetitionBtn").click(function(event) {event.preventDefault(); addCompetition(); });
             $("#addMatchBtn").click(function(event) {event.preventDefault(); addMatch(); });
+            // Load data from database, when page is ready.
+            loadClubs();
+            loadShooters();
+            loadCompetitions();
+            loadMatches();
         })
     </script>
 
