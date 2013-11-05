@@ -153,8 +153,8 @@ public class TournamentDAO {
 	 * Gets the list of competitions registered in the database 
 	 */
 	public List<Competition> getCompetitions() {
-		String selectSql = "SELECT competition.id, shooters.name, clubs.club FROM competitions "
-				+ "JOIN shooters ON competition.shooter = shooters.id "
+		String selectSql = "SELECT competitions.id, shooters.name, clubs.club FROM competitions "
+				+ "JOIN shooters ON competitions.shooter = shooters.id "
 				+ "JOIN clubs ON shooters.club = clubs.id";
 		List<Competition> competitions = new ArrayList<Competition>();
         try (Connection conn = connector.getConnection(); ){
@@ -201,7 +201,7 @@ public class TournamentDAO {
 				+ "competition3a, "
 				+ "competition3b) VALUES ( ?, ?, ?, ?, ?, ?, ?)";
 		
-		DBUtils.executeStatement(connector, insertSql, teamA.get(0), teamB.get(0), 
+		DBUtils.executeStatement(connector, insertSql, name, teamA.get(0), teamB.get(0), 
 				teamA.get(1), teamB.get(1), teamA.get(2), teamB.get(2));
 	}
 	

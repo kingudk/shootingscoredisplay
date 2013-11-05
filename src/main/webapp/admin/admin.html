@@ -324,16 +324,16 @@
         }
         
         function addMatch() {
-            var addMatchUrl = '';
+            var addMatchUrl = '../rest/admin/addMatch/';
             $.post(
                 addMatchUrl,
                 {matchName: $("#addMatchMatchName").val(),
-                teamAcompetition1: $("#teamAcompetition1Select").val(),
-                teamAcompetition2: $("#teamAcompetition2Select").val(),
-                teamAcompetition3: $("#teamAcompetition3Select").val(),
-                teamBcompetition1: $("#teamBcompetition1Select").val(),
-                teamBcompetition2: $("#teamBcompetition2Select").val(),
-                teamBcompetition3: $("#teamBcompetition3Select").val(),},
+                teamAcompetition1: $("#teamAcompetion1Select").val(),
+                teamAcompetition2: $("#teamAcompetion2Select").val(),
+                teamAcompetition3: $("#teamAcompetion3Select").val(),
+                teamBcompetition1: $("#teamBcompetion1Select").val(),
+                teamBcompetition2: $("#teamBcompetion2Select").val(),
+                teamBcompetition3: $("#teamBcompetion3Select").val()},
                 function(j) {
                     $("#addMatchMatchName").empty();
                     loadMatches();},
