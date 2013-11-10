@@ -7,6 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import dk.kingu.shootingscoredisplay.event.ShotEvent;
 import dk.kingu.shootingscoredisplay.utils.ArgValidator;
 import dk.kingu.shootingscoredisplay.utils.DBConnector;
@@ -19,6 +22,7 @@ import dk.kingu.shootingscoredisplay.utils.SIUSUtils;
 public class TournamentDAO {
 
 	private final DBConnector connector;
+	private Logger log = LoggerFactory.getLogger(getClass());
 	
 	public TournamentDAO(DBConnector connector) {
 		this.connector = connector;
@@ -219,16 +223,19 @@ public class TournamentDAO {
                 
                 while(dbResult.next()) {
                 	Match match = new Match();
-                	match.setName(dbResult.getString(1));
-                	match.setState(MatchState.fromValue(dbResult.getInt(2)));
+                	match.setName(dbResult.getString("name"));
+                	match.setState(MatchState.fromValue(dbResult.getInt("state")));
+                	
                 	List<Integer> teamA = new ArrayList<Integer>(3);
-                	for(int i = 0; i<3; i++) {
-                		teamA.add(dbResult.getInt(3 + i));
-                	}
+                	teamA.add(dbResult.getInt("competition1a"));
+                	teamA.add(dbResult.getInt("competition2a"));
+                	teamA.add(dbResult.getInt("competition3a"));
+                
                 	List<Integer> teamB = new ArrayList<Integer>(3);
-                	for(int i = 0; i<3; i++) {
-                		teamB.add(dbResult.getInt(6 + i));
-                	}
+                	teamB.add(dbResult.getInt("competition1b"));
+                	teamB.add(dbResult.getInt("competition2b"));
+                	teamB.add(dbResult.getInt("competition3b"));
+
                 	match.setTeamA(teamA);
                 	match.setTeamB(teamB);
                 	matches.add(match);

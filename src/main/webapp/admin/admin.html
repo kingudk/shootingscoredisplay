@@ -292,7 +292,7 @@
                  shooterID: $("#addCompetitionSelectShooter").val()},
                 function(j) {
                     $("#addCompetitionID").empty();
-                    loadShooters();},
+                    loadCompetitions();},
                 'json'
             ).fail(function() {
                 alert("Kunne ikke oprette konkurrence.");
@@ -307,18 +307,18 @@
             }).always(function() {
                 $("#matchTableBody").empty();
                 for(var i = 0; i<matches.length; i++) {
-                    var html = "<tr><td>" + matches[i].matchName + "</td>";
+                    var html = "<tr><td>" + matches[i].name + "</td>";
                     html += "<td>";
-                    for(var j = 0; i<matches[i].teamA.length; j++) {
+                    for(var j = 0; j<matches[i].teamA.length; j++) {
                         html += " - " + matches[i].teamA[j] + "<br>";
                     }
                     html += "</td><td>";
-                    for(var j = 0; i<matches[i].teamB.length; j++) {
+                    for(var j = 0; j<matches[i].teamB.length; j++) {
                         html += " - " + matches[i].teamB[j] + "<br>";
                     }
                     html += "</td></tr>";
                     
-                    ("#matchTableBody").append(html);
+                    $("#matchTableBody").append(html);
                 }
             });
         }

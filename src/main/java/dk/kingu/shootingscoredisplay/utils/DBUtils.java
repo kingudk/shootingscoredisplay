@@ -54,6 +54,8 @@ public class DBUtils {
         ArgValidator.checkNotNullOrEmpty(query, "String query");
         ArgValidator.checkNotNull(args, "Object... args");
         
+        log.debug("Executing statement with query: '" + query + "', and arguments: '" + Arrays.asList(args) + "'");
+        
         PreparedStatement ps = null; 
         ResultSet res = null;
         Connection conn = null;
