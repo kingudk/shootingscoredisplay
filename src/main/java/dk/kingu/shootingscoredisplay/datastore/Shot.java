@@ -1,6 +1,9 @@
 package dk.kingu.shootingscoredisplay.datastore;
 
+import java.util.Date;
+
 import dk.kingu.shootingscoredisplay.event.ShotEvent;
+import dk.kingu.shootingscoredisplay.utils.SIUSUtils;
 
 public class Shot {
 
@@ -20,6 +23,17 @@ public class Shot {
 		decimalValue = event.getDecimalShotValue();
 		logTimeStamp = event.getLogTimeStamp();
 		caliber = event.getCaliber();
+	}
+	
+	public Shot(float Xcoord, float Ycoord, int seqNumber, int value, int decimalValue, 
+	        Date logDate, int caliber) {
+	    this.XCoord = Xcoord;
+	    this.YCoord = Ycoord;
+	    this.seqNumber = seqNumber;
+	    this.shotValue = value;
+	    this.decimalValue = decimalValue;
+	    this.logTimeStamp = SIUSUtils.getLogTimeFromDate(logDate);
+	    this.caliber = caliber;
 	}
 
 	public float getXCoord() {

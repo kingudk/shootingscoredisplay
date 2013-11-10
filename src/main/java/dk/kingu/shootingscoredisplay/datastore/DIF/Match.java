@@ -7,11 +7,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Match {
 	
-	private String name;
+    private int matchID;
+    private String name;
 	private List<Integer> teamA;
 	private List<Integer> teamB;
 	private MatchState state;
 	
+   public int getMatchID() {
+        return matchID;
+    }
+    public void setMatchID(int matchID) {
+        this.matchID = matchID;
+    }
 	public String getName() {
 		return name;
 	}

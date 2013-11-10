@@ -23,16 +23,19 @@ CREATE TABLE competitions (
 CREATE TABLE shots (
     id INT NOT NULL GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     time TIMESTAMP NOT NULL,
+    seqNumber INT NOT NULL,
     xcoord FLOAT NOT NULL, 
     ycoord FLOAT NOT NULL,
     value INT NOT NULL,
-    decimalvalue FLOAT NOT NULL,
+    decimalvalue INT NOT NULL,
     type INT NOT NULL,
     competitionid INT,
     fireingpoint INT,
+    caliber INT,
     
     --FOREIGN KEY (competitionid) REFERENCES competition(id),
-    UNIQUE(competitionid, time)
+    UNIQUE(competitionid, time),
+    UNIQUE(fireingpoint, seqNumber, competitionid)
 );
 
 
@@ -54,4 +57,11 @@ CREATE TABLE matches (
     FOREIGN KEY (competition3a) REFERENCES competitions(id),
     FOREIGN KEY (competition3b) REFERENCES competitions(id)
 );
+
+-- Test data, yes I know this is cheating..
+INSERT INTO clubs (club) VALUES ('DSB/ASF');
+INSERT INTO shooters (name, club) VALUES ('Kim Christensen', 1);
+INSERT INTO competitions (id, shooter) VALUES (1,1);
+INSERT INTO shots (time, seqNumber, xcoord, ycoord, value, decimalvalue, type, competitionid, fireingpoint, caliber) VALUES (TIMESTAMP('1970-01-01', '23.59.39'), 1, 0.000, 0.000, 10, 109, 2, 1, 44, 450);
+
 

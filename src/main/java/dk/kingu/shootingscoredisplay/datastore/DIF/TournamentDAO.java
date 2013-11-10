@@ -4,12 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import dk.kingu.shootingscoredisplay.datastore.Shot;
 import dk.kingu.shootingscoredisplay.event.ShotEvent;
 import dk.kingu.shootingscoredisplay.utils.ArgValidator;
 import dk.kingu.shootingscoredisplay.utils.DBConnector;
@@ -31,15 +33,64 @@ public class TournamentDAO {
 	/**
 	 * Add a shot to the database 
 	 * @param shot The ShotEvent from which to take information to store in the database
+	 * @throws ParseException if the time in provided ShotEvent cannot be parsed.
 	 */
-	public void addShot(ShotEvent shot) {
+	public void addShot(ShotEvent shot) throws ParseException {
 		String insertSql = "INSERT INTO shots "
-				+ "(time, xcoord, ycoord, value, decimalvalue, type, competitionid, fireingpoint)"
-				+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+				+ "(time, seqNumber, xcoord, ycoord, value, decimalvalue, type, competitionid, fireingpoint, caliber)"
+				+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		
 		DBUtils.executeStatement(connector, insertSql, SIUSUtils.getLogTime(shot.getLogTimeStamp()), 
-				shot.getXcoord(), shot.getYcoord(), shot.getShotValue(), shot.getDecimalShotValue(), 
-				SIUSUtils.getShotType(shot.getShotAttr()).value(), shot.getShooterID(), shot.getFireingPointID());
+				shot.getSequenceNumber(), shot.getXcoord(), shot.getYcoord(), shot.getShotValue(), 
+				shot.getDecimalShotValue(), SIUSUtils.getShotType(shot.getShotAttr()).ordinal(), 
+				shot.getShooterID(), shot.getFireingPointID(), shot.getCaliber());
+	}
+	
+	/**
+	 * Method to obtain the shots for a given competion. 
+	 * @param competitionID The id of the competition
+	 * @param type The type of shots wanted (sighters or competition)
+	 * @return List<Shot> the shots registered for the given competitionID and shottype
+	 */
+	public List<Shot> getShotsByCompetitionID(int competitionID, ShotType type) {
+	    List<Shot> shots = null;
+		String selectSql = "SELECT xcoord, ycoord, seqNumber, value, decimalvalue, time, caliber"
+		        + " FROM shots"
+		        + " WHERE competitionid = ?"
+		        + " AND type = ?"
+		        + " ORDER BY id";
+		
+		try (Connection conn = connector.getConnection(); ){
+            ResultSet dbResult = null;
+            PreparedStatement ps = null;
+            try {
+                ps = DBUtils.makePreparedStatement(conn, selectSql, competitionID, type.ordinal());
+                dbResult = ps.executeQuery();
+                shots = new ArrayList<Shot>();
+                while(dbResult.next()) {
+                    Shot shot = new Shot(dbResult.getFloat("xcoord"),
+                            dbResult.getFloat("ycoord"),
+                            dbResult.getInt("seqNumber"),
+                            dbResult.getInt("value"),
+                            dbResult.getInt("decimalValue"),
+                            dbResult.getDate("time"),
+                            dbResult.getInt("caliber"));
+                    shots.add(shot);
+                }
+            } finally {
+                if(dbResult != null) {
+                    dbResult.close();
+                }
+                if(ps != null) {
+                    ps.close();
+                }
+            }
+        } catch (SQLException e) {
+            throw new IllegalStateException("Could not retrieve the clubs for with the SQL '"
+                    + selectSql + "'.", e);
+        }
+		
+		return shots;
 	}
 	
 	/**
@@ -193,6 +244,43 @@ public class TournamentDAO {
 		
 	}
 	
+    public Competition getCompetition(int competitionID) {
+        String selectSql = "SELECT competitions.id, shooters.name, clubs.club FROM competitions"
+                + " JOIN shooters ON competitions.shooter = shooters.id"
+                + " JOIN clubs ON shooters.club = clubs.id"
+                + " WHERE competitions.id = ?";
+        
+        Competition competition = null;
+        try (Connection conn = connector.getConnection(); ){
+            ResultSet dbResult = null;
+            PreparedStatement ps = null;
+            try {
+                ps = DBUtils.makePreparedStatement(conn, selectSql, competitionID);
+                dbResult = ps.executeQuery();
+                while(dbResult.next()) {
+                    competition = new Competition();
+                    competition.setCompetitionID(dbResult.getInt(1));
+                    Shooter shooter = new Shooter();
+                    shooter.setShooterName(dbResult.getString(2));
+                    shooter.setClubName(dbResult.getString(3));
+                    competition.setShooter(shooter);
+                }
+            } finally {
+                if(dbResult != null) {
+                    dbResult.close();
+                }
+                if(ps != null) {
+                    ps.close();
+                }
+            }
+        } catch (SQLException e) {
+            throw new IllegalStateException("Could not retrieve the clubs for with the SQL '"
+                    + selectSql + "'.", e);
+        }
+        
+        return competition;
+    }
+	
 	public void addMatch(String name, List<Integer> teamA, List<Integer> teamB) {
 		ArgValidator.checkNotNullOrEmpty(name, "name");
 		ArgValidator.checkNotNullAndLength(teamA, 3, "teamA");
@@ -209,8 +297,57 @@ public class TournamentDAO {
 				teamA.get(1), teamB.get(1), teamA.get(2), teamB.get(2));
 	}
 	
+	public Match getMatch(int matchID) {
+       String selectSql = "SELECT id, name, state, competition1a, competition2a, "
+                + "competition3a, competition1b, competition2b, competition3b"
+                + " FROM matches"
+                + " WHERE id = ?";
+	    
+       Match match = null;
+       try (Connection conn = connector.getConnection(); ){
+           ResultSet dbResult = null;
+           PreparedStatement ps = null;
+           try {
+               ps = DBUtils.makePreparedStatement(conn, selectSql, matchID);
+               dbResult = ps.executeQuery();
+               
+               while(dbResult.next()) {
+                   match = new Match();
+                   match.setMatchID(dbResult.getInt("id"));
+                   match.setName(dbResult.getString("name"));
+                   match.setState(MatchState.fromValue(dbResult.getInt("state")));
+                   
+                   List<Integer> teamA = new ArrayList<Integer>(3);
+                   teamA.add(dbResult.getInt("competition1a"));
+                   teamA.add(dbResult.getInt("competition2a"));
+                   teamA.add(dbResult.getInt("competition3a"));
+               
+                   List<Integer> teamB = new ArrayList<Integer>(3);
+                   teamB.add(dbResult.getInt("competition1b"));
+                   teamB.add(dbResult.getInt("competition2b"));
+                   teamB.add(dbResult.getInt("competition3b"));
+
+                   match.setTeamA(teamA);
+                   match.setTeamB(teamB);
+               }
+           } finally {
+               if(dbResult != null) {
+                   dbResult.close();
+               }
+               if(ps != null) {
+                   ps.close();
+               }
+           }
+       } catch (SQLException e) {
+           throw new IllegalStateException("Could not retrieve the clubs for with the SQL '"
+                   + selectSql + "'.", e);
+       }
+       
+	    return match;
+	}
+	
 	public List<Match> getMatches() {
-		String selectSql = "SELECT name, state, competition1a, competition2a, "
+		String selectSql = "SELECT id, name, state, competition1a, competition2a, "
 				+ "competition3a, competition1b, competition2b, competition3b "
 				+ "FROM matches";
 		List<Match> matches = new ArrayList<Match>();
@@ -223,6 +360,7 @@ public class TournamentDAO {
                 
                 while(dbResult.next()) {
                 	Match match = new Match();
+                    match.setMatchID(dbResult.getInt("id"));
                 	match.setName(dbResult.getString("name"));
                 	match.setState(MatchState.fromValue(dbResult.getInt("state")));
                 	

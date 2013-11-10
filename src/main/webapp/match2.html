@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>DIF Turnering</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DIF turnering">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  
+  <body>
+  
+    <div class="navbar navbar-inverse navbar-static-top">
+        <div class="navbar-inner">
+            <a class="brand" href="#">DIF turnering</a>
+            <ul class="nav" id="matches-nav">
+                <li class="active"><a href="#">Oversigt</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="container-fluid">
+    
+        <div class="row-fluid">
+            <div id="match-overview"> &nbsp; </div>
+        </div>
+
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="row-fluid">
+                    <div class="span6" id="match1a"></div>
+                    <div class="span6" id="match1b"></div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span6" id="match2a"></div>
+                    <div class="span6" id="match2b"></div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span6" id="match3a"></div>
+                    <div class="span6" id="match3b"></div>
+                </div>
+            </div>
+        </div>
+      
+    </div>
+    <script type="text/javascript" src="jquery/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="bbq/jquery.ba-bbq.min.js"> </script>
+        <script type="text/javascript" src="competition.js"> </script>
+    
+   <script type="text/javascript">
+    
+        var DIFMatch;
+        var competitions;
+        var autoRefresh;
+    
+        function getMatches() {
+            $.getJSON('rest/public/getMatches', {}, buildMenu);
+        }
+        
+        function getMatch() {
+            if($.deparam.fragment().match != null) {
+                url = 'rest/public/getMatch?matchID=' + $.deparam.fragment().match;
+                $.getJSON(url, {}, setMatch);
+            }
+        }
+    
+        function buildMenu(items) {
+            var menuEntries;
+            if($.deparam.fragment().match == null) {
+                menuEntries = '<li class="active">';
+            } else {
+                menuEntries = '<li>';
+            }
+            menuEntries += '<a href="#">Oversigt</a><li>';
+                
+            for(var i = 0; i<items.length; i++) {
+                if(items[i].matchID == $.deparam.fragment().match) {
+                    menuEntries += '<li class="active">';
+                } else {
+                    menuEntries += '<li>';
+                }
+                menuEntries += '<a href="#match=' + items[i].matchID + '">' + items[i].name + '</a></li>';
+            }
+            
+            $("#matches-nav").html(menuEntries);
+        }
+
+        function setMatch(data) {
+            DIFMatch = new Object();
+            DIFMatch.id = data.matchID;
+            DIFMatch.name = data.name;
+            DIFMatch.team1 = data.teamA;
+            DIFMatch.team2 = data.teamB;
+            competitions = new Array();   
+            for(var i = 0; i < data.teamA.length; i++) {
+                var competition = new Competition(data.matchID, "match" + (i+1) + "a");
+                competition.update();
+                competitions.push(competition);
+            }
+            for(var i = 0; i < data.teamB.length; i++) {
+                var competition = new Competition(data.matchID, "match" + (i+1) + "b");
+                competition.update();
+                competitions.push(competition);
+            }
+        }
+                
+        function refresh() {
+            for(c in competitions) {
+                competitions[c].update();
+            }
+        }
+        
+        function hashChanged(e) {
+            clearInterval(autoRefresh);
+            if(location.hash == "") {
+                DIFMatch = null;
+                lanesData = null;
+            } else {
+                //autoRefresh = setInterval(refresh, 2000);
+            }
+            getMatches();
+            getMatch();
+            refresh();
+        }
+        
+        $(document).ready(function() {
+            $(window).bind('hashchange', hashChanged);
+            hashChanged();
+        })
+        
+    </script> 
+    
+  </body>
+</html>
