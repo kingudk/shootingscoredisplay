@@ -94,12 +94,12 @@
             DIFMatch.team2 = data.teamB;
             competitions = new Array();   
             for(var i = 0; i < data.teamA.length; i++) {
-                var competition = new Competition(data.matchID, "match" + (i+1) + "a");
+                var competition = new Competition(data.teamA[i], "match" + (i+1) + "a");
                 competition.update();
                 competitions.push(competition);
             }
             for(var i = 0; i < data.teamB.length; i++) {
-                var competition = new Competition(data.matchID, "match" + (i+1) + "b");
+                var competition = new Competition(data.teamB[i], "match" + (i+1) + "b");
                 competition.update();
                 competitions.push(competition);
             }

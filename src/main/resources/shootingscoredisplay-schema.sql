@@ -31,11 +31,11 @@ CREATE TABLE shots (
     type INT NOT NULL,
     competitionid INT,
     fireingpoint INT,
-    caliber INT,
+    caliber INT
     
     --FOREIGN KEY (competitionid) REFERENCES competition(id),
-    UNIQUE(competitionid, time),
-    UNIQUE(fireingpoint, seqNumber, competitionid)
+    --UNIQUE(competitionid, time),
+    --UNIQUE(fireingpoint, seqNumber, competitionid)
 );
 
 

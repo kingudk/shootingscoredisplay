@@ -105,6 +105,8 @@ public class DBUtils {
                 s.setBoolean(i, (Boolean) arg);
             } else if (arg instanceof Date) {
                 s.setTimestamp(i, new Timestamp(((Date) arg).getTime()));
+            } else if (arg instanceof Float) {
+                s.setFloat(i, (Float) arg);
             } else {
                 if(arg == null) {
                     throw new IllegalStateException("Cannot handle a null as argument for SQL query. We can only "
