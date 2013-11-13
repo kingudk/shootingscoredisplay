@@ -80,7 +80,49 @@ function Competition(matchID, placeholder) {
     function refreshShotsDisplay() {
         $("#" + ID + "-total").html(getTotal);
         $("#" + ID + "-prognosis").html(getForecast);
+        updateSeriesElements();
+        updateLastSeriesElement();
     }
+    
+    function updateLastSeriesElement() {
+        var j = 1;
+        var seriesFound = false;
+        while(!seriesFound) {
+            if(shots.length > (j*10) {
+                j++;
+            } else {
+                seriesFound = true;
+            }
+        }
+        for(var i = 0; i < 10; i++) {
+            var val = 0;
+            if((j+i) < shots.length) {
+                val = shots[j+i];
+            }
+            $("#" + ID + "-LS" + seriesCount).empty();
+            $("#" + ID + "-LS" + seriesCount).html((val / 10));
+        }
+    }
+    
+    function updateSeriesElements() {
+        var seriesCount = 1;
+        var shotCount = 0;
+        var runningTotal = 0;
+        for(i in shots) {
+            runningTotal += shots[i];
+            shotCount++;
+            if(shotCount == 10) {
+                $("#" + ID + "-S" + seriesCount).empty();
+                $("#" + ID + "-S" + seriesCount).html((runningTotal / 10));
+                runningTotal = 0;
+                seriesCount++;
+            }
+        }
+        // Update the last series
+        $("#" + ID + "-S" + seriesCount).empty();
+        $("#" + ID + "-S" + seriesCount).html((runningTotal / 10));
+    }
+    
     
     /*
         Elements that the is taken:

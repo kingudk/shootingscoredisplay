@@ -1,5 +1,8 @@
 package dk.kingu.shootingscoredisplay.sius;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import dk.kingu.shootingscoredisplay.event.GroupEvent;
 import dk.kingu.shootingscoredisplay.event.NameEvent;
 import dk.kingu.shootingscoredisplay.event.PracticeEvent;
@@ -8,6 +11,7 @@ import dk.kingu.shootingscoredisplay.event.ShotEvent;
 
 public class SiusMessageParser {
 	
+    private static Logger log = LoggerFactory.getLogger(SiusMessageParser.class);
 	private static final String SHOT_MNEMONIC = "_SHOT";
 	private static final String GROUP_MNEMONIC = "_GRPH";
 	private static final String NAME_MNEMONIC = "_NAME";
@@ -25,6 +29,7 @@ public class SiusMessageParser {
 		} else if(eventType.equals(PRACTICE_MNEMONIC)) {
 			return makePracticeEvent(message);
 		} else {
+		    log.info("Can't parse event, message was: '" + message + "'");
 			return null;
 		}
 	}
@@ -79,7 +84,7 @@ public class SiusMessageParser {
 			event.setLaneID(Integer.parseInt(tokens[1]));
 			event.setFireingPointID(Integer.parseInt(tokens[2]));
 			event.setShooterID(Integer.parseInt(tokens[3]));
-			event.setSequenceNumber(Integer.parseInt(tokens[4]));
+			event.setSequenceNumber(Integer.parseInt(tokens[5]));
 			event.setLogTimeStamp(tokens[6]);
 			event.setEventType(Integer.parseInt(tokens[7]));
 			event.setShotAttr(Integer.parseInt(tokens[9]));

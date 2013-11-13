@@ -23,6 +23,8 @@ public class DBEventStorer implements ScoreEventHandler {
                 dao.addShot((ShotEvent) event);
             } catch (ParseException e) {
                 log.info(e.getMessage(), e);
+            } catch (IllegalStateException e) {
+                log.info(e.getMessage(), e);
             }
 	    }
 	}

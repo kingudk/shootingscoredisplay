@@ -35,7 +35,7 @@ public class TournamentDAO {
 	 * @param shot The ShotEvent from which to take information to store in the database
 	 * @throws ParseException if the time in provided ShotEvent cannot be parsed.
 	 */
-	public void addShot(ShotEvent shot) throws ParseException {
+	public void addShot(ShotEvent shot) throws ParseException, IllegalStateException {
 		String insertSql = "INSERT INTO shots "
 				+ "(time, seqNumber, xcoord, ycoord, value, decimalvalue, type, competitionid, fireingpoint, caliber)"
 				+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -72,7 +72,7 @@ public class TournamentDAO {
                             dbResult.getFloat("ycoord"),
                             dbResult.getInt("seqNumber"),
                             dbResult.getInt("value"),
-                            dbResult.getInt("decimalValue"),
+                            dbResult.getInt("decimalvalue"),
                             dbResult.getDate("time"),
                             dbResult.getInt("caliber"));
                     shots.add(shot);

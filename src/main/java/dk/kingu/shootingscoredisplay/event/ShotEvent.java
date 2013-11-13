@@ -107,7 +107,8 @@ public class ShotEvent implements ScoreEvent {
 				+ logTimeStamp + ", eventType=" + eventType + ", shotAttr="
 				+ shotAttr + ", shotID=" + shotID + ", Xcoord=" + Xcoord
 				+ ", Ycoord=" + Ycoord + ", timeStamp=" + timeStamp
-				+ ", caliber=" + caliber + ", shotValue=" + shotValue + "]";
+				+ ", caliber=" + caliber + ", shotValue=" + shotValue 
+				+ ", decimalShotValue=" + decimalShotValue + " ]";
 	}
 
 	public void setLaneID(int laneID) {

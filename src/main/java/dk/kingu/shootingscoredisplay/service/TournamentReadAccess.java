@@ -89,6 +89,24 @@ public class TournamentReadAccess {
                 ShotType.COMPETITION);
         
         for(Shot shot : shots) {
+            shotList.add(shot.getShotValue());
+        }
+        
+        return shotList;
+        
+    }
+    
+    @GET
+    @Path("/getDecimalShots")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Integer> getDecimalShots(@QueryParam("competitionID") int competitionID) {
+        List<Integer> shotList = new ArrayList<Integer>();
+        //TODO Add some handling of sighters
+        
+        List<Shot> shots = service.getTournamentDAO().getShotsByCompetitionID(competitionID, 
+                ShotType.COMPETITION);
+        
+        for(Shot shot : shots) {
             shotList.add(shot.getDecimalValue());
         }
         
