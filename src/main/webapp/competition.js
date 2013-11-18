@@ -95,13 +95,14 @@ function Competition(matchID, placeholder) {
                 seriesFound = true;
             }
         }
+        var startIdx = (j-1) * 10;
         for(var i = 0; i < 10; i++) {
             var val = 0;
-            if((j+i) < shots.length) {
+            if((startIdx+i) < shots.length) {
                 val = shots[j+i];
             }
             $("#" + ID + "-LS" + i).empty();
-            $("#" + ID + "-LS" + i).html((val / 10));
+            $("#" + ID + "-LS" + i).html((val / 10).toFixed(1));
         }
     }
     
