@@ -64,7 +64,7 @@ function Competition(matchID, placeholder) {
     }
     
     function updateShotData() {
-        var shotsUrl = "rest/public/getShots/?competitionID=" + ID;
+        var shotsUrl = "rest/public/getDecimalShots/?competitionID=" + ID;
         $.getJSON(shotsUrl, {}, function(data) {
             shots = data.slice();
         }).done(function() {
@@ -79,7 +79,8 @@ function Competition(matchID, placeholder) {
     
     function refreshShotsDisplay() {
         $("#" + ID + "-total").html(getTotal);
-        $("#" + ID + "-prognosis").html(getForecast);
+        var forecast = getForecast();
+        $("#" + ID + "-prognosis").html(forecast.toFixed(1));
         updateSeriesElements();
         updateLastSeriesElement();
     }
@@ -88,7 +89,7 @@ function Competition(matchID, placeholder) {
         var j = 1;
         var seriesFound = false;
         while(!seriesFound) {
-            if(shots.length > (j*10) {
+            if(shots.length > (j*10)) {
                 j++;
             } else {
                 seriesFound = true;
@@ -99,8 +100,8 @@ function Competition(matchID, placeholder) {
             if((j+i) < shots.length) {
                 val = shots[j+i];
             }
-            $("#" + ID + "-LS" + seriesCount).empty();
-            $("#" + ID + "-LS" + seriesCount).html((val / 10));
+            $("#" + ID + "-LS" + i).empty();
+            $("#" + ID + "-LS" + i).html((val / 10));
         }
     }
     
@@ -111,7 +112,7 @@ function Competition(matchID, placeholder) {
         for(i in shots) {
             runningTotal += shots[i];
             shotCount++;
-            if(shotCount == 10) {
+            if((shotCount % 10) == 0) {
                 $("#" + ID + "-S" + seriesCount).empty();
                 $("#" + ID + "-S" + seriesCount).html((runningTotal / 10));
                 runningTotal = 0;

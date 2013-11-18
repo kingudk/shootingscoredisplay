@@ -28,6 +28,10 @@
         <div class="row-fluid">
             <div class="span12">
                 <div class="row-fluid">
+                    <div class="span3 offset3"><h2 id="teamA-score">Team A score:</h2></div>
+                    <div class="span3"><h2 id="teamB-score">Team B score:</h2></div>
+                </div>
+                <div class="row-fluid">
                     <div class="span6" id="match1a"></div>
                     <div class="span6" id="match1b"></div>
                 </div>
@@ -92,23 +96,63 @@
             DIFMatch.name = data.name;
             DIFMatch.team1 = data.teamA;
             DIFMatch.team2 = data.teamB;
-            competitions = new Array();   
+            competitions = new Object();
+            competitions.teamA = new Array();   
             for(var i = 0; i < data.teamA.length; i++) {
                 var competition = new Competition(data.teamA[i], "match" + (i+1) + "a");
                 competition.update();
-                competitions.push(competition);
+                competitions.teamA.push(competition);
             }
+            competitions.teamB = new Array();  
             for(var i = 0; i < data.teamB.length; i++) {
                 var competition = new Competition(data.teamB[i], "match" + (i+1) + "b");
                 competition.update();
-                competitions.push(competition);
+                competitions.teamB.push(competition);
             }
+        }
+        
+        function refreshTeamScores() {
+            var teamAScore = 0;
+            var teamBScore = 0;
+            if(competitions != null) {
+                for(var i = 0; i<3; i++) {
+                    tot1 = competitions.teamA[i].getForecast();
+                    tot2 = competitions.teamB[i].getForecast();
+                    if(tot1 > tot2) {
+                        teamAScore++;
+                    }
+                    if(tot2 > tot1) {
+                        teamBScore++;
+                    }
+                }
+            }
+            $("#teamA-score").empty();
+            $("#teamB-score").empty();
+            $("#teamA-score").html("Team A score: " + teamAScore);
+            $("#teamB-score").html("Team B score: " + teamBScore);
         }
                 
         function refresh() {
-            for(c in competitions) {
-                competitions[c].update();
+            if(competitions != null) {
+                for(c in competitions.teamA) {
+                    competitions.teamA[c].update();
+                }
+                for(c in competitions.teamB) {
+                    competitions.teamB[c].update();
+                }
+                refreshTeamScores();
             }
+        }
+        
+        function clearPage() {
+            $("#teamA-score").empty();
+            $("#teamB-score").empty();
+            $("#match1a").empty();
+            $("#match1b").empty();
+            $("#match1c").empty();
+            $("#match2a").empty();
+            $("#match2b").empty();
+            $("#match2c").empty();
         }
         
         function hashChanged(e) {
@@ -116,6 +160,8 @@
             if(location.hash == "") {
                 DIFMatch = null;
                 lanesData = null;
+                clearInterval(autoRefresh);
+                competitions = null;
             } else {
                 autoRefresh = setInterval(refresh, 5000);
             }
