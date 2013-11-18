@@ -64,7 +64,7 @@ function Competition(matchID, placeholder) {
     }
     
     function updateShotData() {
-        var shotsUrl = "rest/public/getDecimalShots/?competitionID=" + ID;
+        var shotsUrl = "rest/public/getShots/?competitionID=" + ID;
         $.getJSON(shotsUrl, {}, function(data) {
             shots = data.slice();
         }).done(function() {

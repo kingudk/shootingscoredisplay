@@ -33,9 +33,14 @@ public class TargetUtils {
 		}
 		
 		if(shots != null) {
-			for(Shot shot : shots) {
+			for(int i = 0; i< shots.size(); i++) {
+			    Shot shot = shots.get(i);
+			    String color = "blue";
+			    if(i == shots.size() - 1) {
+			        color = "red";
+			    }
 				sb.append(makeShotMarking((int) (500 + (shot.getXCoord() * 20000)), 
-						(int) (500 - (shot.getYCoord() * 20000)), "red"));
+						(int) (500 - (shot.getYCoord() * 20000)), color));
 			}
 		}
 		
