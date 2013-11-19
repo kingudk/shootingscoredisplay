@@ -1,7 +1,7 @@
 <web-app>
 	<display-name>Shooting score display</display-name>
 	<welcome-file-list>
-		<welcome-file>match.html</welcome-file>
+		<welcome-file>match2.html</welcome-file>
 	</welcome-file-list>
 	<servlet>
 		<servlet-name>Shooting-score-display</servlet-name>
