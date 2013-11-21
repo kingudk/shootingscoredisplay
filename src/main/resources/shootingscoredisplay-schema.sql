@@ -59,9 +59,9 @@ CREATE TABLE matches (
 );
 
 -- Test data, yes I know this is cheating..
-INSERT INTO clubs (club) VALUES ('DSB/ASF');
-INSERT INTO shooters (name, club) VALUES ('Kim Christensen', 1);
-INSERT INTO competitions (id, shooter) VALUES (1,1);
-INSERT INTO shots (time, seqNumber, xcoord, ycoord, value, decimalvalue, type, competitionid, fireingpoint, caliber) VALUES (TIMESTAMP('1970-01-01', '23.59.39'), 1, 0.000, 0.000, 10, 109, 2, 1, 44, 450);
+--INSERT INTO clubs (club) VALUES ('DSB/ASF');
+--INSERT INTO shooters (name, club) VALUES ('Kim Christensen', 1);
+--INSERT INTO competitions (id, shooter) VALUES (1,1);
+--INSERT INTO shots (time, seqNumber, xcoord, ycoord, value, decimalvalue, type, competitionid, fireingpoint, caliber) VALUES (TIMESTAMP('1970-01-01', '23.59.39'), 1, 0.000, 0.000, 10, 109, 2, 1, 44, 450);
 
 
