@@ -98,11 +98,13 @@ function Competition(matchID, placeholder) {
         var startIdx = (j-1) * 10;
         for(var i = 0; i < 10; i++) {
             var val = 0;
+            $("#" + ID + "-LS" + (i+1)).empty();
             if((startIdx+i) < shots.length) {
-                val = shots[j+i];
+                val = shots[startIdx+i];
+                $("#" + ID + "-LS" + (i+1)).html((val / 10).toFixed(1));
+            } else {
+                $("#" + ID + "-LS" + (i+1)).html("&nbsp;");
             }
-            $("#" + ID + "-LS" + i).empty();
-            $("#" + ID + "-LS" + i).html((val / 10).toFixed(1));
         }
     }
     
@@ -115,7 +117,7 @@ function Competition(matchID, placeholder) {
             shotCount++;
             if((shotCount % 10) == 0) {
                 $("#" + ID + "-S" + seriesCount).empty();
-                $("#" + ID + "-S" + seriesCount).html((runningTotal / 10));
+                $("#" + ID + "-S" + seriesCount).html((runningTotal / 10).toFixed(1));
                 runningTotal = 0;
                 seriesCount++;
             }
