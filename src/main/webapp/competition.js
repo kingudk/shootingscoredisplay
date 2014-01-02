@@ -78,7 +78,8 @@ function Competition(matchID, placeholder) {
     }
     
     function refreshShotsDisplay() {
-        $("#" + ID + "-total").html(getTotal);
+        var total = getTotal();
+        $("#" + ID + "-total").html(total.toFixed(1));
         var forecast = getForecast();
         $("#" + ID + "-prognosis").html(forecast.toFixed(1));
         updateSeriesElements();
