@@ -156,25 +156,25 @@ function Competition(matchID, placeholder) {
     }
     
     function buildSkeleton() {
-        var skeletonHtml = "<div class='row-fluid'>";
-            skeletonHtml += "<div class='span6'>";
-                skeletonHtml += "<div class='row-fluid' id='" + ID + "-shooterID'></div>";
-                skeletonHtml += "<div class='row-fluid'>";
-                    skeletonHtml += "<div class='span6' id='" + ID + "-lastSeries'></div>";
-                    skeletonHtml += "<div class='span6' id='" + ID + "-totals'></div>";
+        var skeletonHtml = "<div class='row'>";
+            skeletonHtml += "<div class='col-md-6'>";
+                skeletonHtml += "<div class='row' id='" + ID + "-shooterID'></div>";
+                skeletonHtml += "<div class='row'>";
+                    skeletonHtml += "<div class='col-md-6' id='" + ID + "-lastSeries'></div>";
+                    skeletonHtml += "<div class='col-md-6' id='" + ID + "-totals'></div>";
                 skeletonHtml += "</div>";
-                skeletonHtml += "<div class='row-fluid'>";
-                    skeletonHtml += "<div class='span12' id='" + ID + "-series'></div>";
+                skeletonHtml += "<div class='row'>";
+                    skeletonHtml += "<div class='col-md-12' id='" + ID + "-series'></div>";
                 skeletonHtml += "</div>";
             skeletonHtml += "</div>";
-            skeletonHtml += "<div class='span6' id='" + ID + "-target'></div>";
+            skeletonHtml += "<div class='col-md-6' id='" + ID + "-target'></div>";
         skeletonHtml += "</div>";
         return skeletonHtml;
     }
     
     function buildShooterIDElement() {
-        var shooterIDHtml = "<div class='span6' id='" + ID + "-shooterName'> Skytte: </div>";
-        shooterIDHtml += "<div class='span6' id='" + ID + "-shooterClub'> Klub: </div>";
+        var shooterIDHtml = "<div class='col-md-6' id='" + ID + "-shooterName'> Skytte: </div>";
+        shooterIDHtml += "<div class='col-md-6' id='" + ID + "-shooterClub'> Klub: </div>";
         return shooterIDHtml;
     }
     
