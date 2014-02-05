@@ -100,6 +100,7 @@ function Competition(matchID, placeholder) {
         for(var i = 0; i < 10; i++) {
             var val = 0;
             $("#" + ID + "-LS" + (i+1)).empty();
+            $("#" + ID + "-LS" + (i+1) + "C").html(startIdx+i + ".");
             if((startIdx+i) < shots.length) {
                 val = shots[startIdx+i];
                 $("#" + ID + "-LS" + (i+1)).html((val / 10).toFixed(1));
@@ -180,11 +181,11 @@ function Competition(matchID, placeholder) {
     
     function buildLastSeriesElement() {
         var lastSeriesHtml = "Sidste serie: <table>";
-        lastSeriesHtml += "<tr><td><i>1.</i></td><td id='" + ID + "-LS1'></td><td> &nbsp; </td><td><i>6.</i></td><td id='" + ID + "-LS6'></td></tr>";
-        lastSeriesHtml += "<tr><td><i>2.</i></td><td id='" + ID + "-LS2'></td><td> &nbsp; </td><td><i>7.</i></td><td id='" + ID + "-LS7'></td></tr>";
-        lastSeriesHtml += "<tr><td><i>3.</i></td><td id='" + ID + "-LS3'></td><td> &nbsp; </td><td><i>8.</i></td><td id='" + ID + "-LS8'></td></tr>";
-        lastSeriesHtml += "<tr><td><i>4.</i></td><td id='" + ID + "-LS4'></td><td> &nbsp; </td><td><i>9.</i></td><td id='" + ID + "-LS9'></td></tr>";
-        lastSeriesHtml += "<tr><td><i>5.</i></td><td id='" + ID + "-LS5'></td><td> &nbsp; </td><td><i>10.</i></td><td id='" + ID + "-LS10'></td></tr>";
+        lastSeriesHtml += "<tr><td><i id='" + ID + "-LS1C' >1.</i></td><td id='" + ID + "-LS1'></td><td> &nbsp; </td><td><i id='" + ID + "-LS6C'>6.</i></td><td id='" + ID + "-LS6'></td></tr>";
+        lastSeriesHtml += "<tr><td><i id='" + ID + "-LS2C'>2.</i></td><td id='" + ID + "-LS2'></td><td> &nbsp; </td><td><i id='" + ID + "-LS7C'>7.</i></td><td id='" + ID + "-LS7'></td></tr>";
+        lastSeriesHtml += "<tr><td><i id='" + ID + "-LS3C'>3.</i></td><td id='" + ID + "-LS3'></td><td> &nbsp; </td><td><i id='" + ID + "-LS8C'>8.</i></td><td id='" + ID + "-LS8'></td></tr>";
+        lastSeriesHtml += "<tr><td><i id='" + ID + "-LS4C'>4.</i></td><td id='" + ID + "-LS4'></td><td> &nbsp; </td><td><i id='" + ID + "-LS9C'>9.</i></td><td id='" + ID + "-LS9'></td></tr>";
+        lastSeriesHtml += "<tr><td><i id='" + ID + "-LS5C'>5.</i></td><td id='" + ID + "-LS5'></td><td> &nbsp; </td><td><i id='" + ID + "-LS10C'>10.</i></td><td id='" + ID + "-LS10'></td></tr>";
         lastSeriesHtml += "</table>";
         return lastSeriesHtml;
     }
@@ -207,7 +208,7 @@ function Competition(matchID, placeholder) {
     }
     
     function buildTargetElement() {
-        var targetUrl = "rest/public/getScoringTarget/?competitionID=" + ID;
+        var targetUrl = "rest/public/getZoomedScoringTarget/?competitionID=" + ID;
         var targetHtml = "<object id='" + ID + "-targetImg' type='image/svg+xml' data='" + targetUrl + "' style='width:175pt'></object>";
         return targetHtml;
     }

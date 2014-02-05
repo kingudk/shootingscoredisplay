@@ -69,13 +69,23 @@ public class TournamentReadAccess {
 	}
 	
     @GET
-    @Path("/getScoringTarget") 
+    @Path("/getFullScoringTarget") 
     @Produces("image/svg+xml")
-    public String getScoringTarget(@QueryParam("competitionID") int competitionID) {
+    public String getFullScoringTarget(@QueryParam("competitionID") int competitionID) {
         List<Shot> shots = service.getTournamentDAO().getShotsByCompetitionID(competitionID, 
                 ShotType.COMPETITION);
         //TODO add some handling of sighters
-        return TargetUtils.makeTarget(shots);
+        return TargetUtils.makeFUllTarget(shots);
+    }
+    
+    @GET
+    @Path("/getZoomedScoringTarget") 
+    @Produces("image/svg+xml")
+    public String getZoomedScoringTarget(@QueryParam("competitionID") int competitionID) {
+        List<Shot> shots = service.getTournamentDAO().getShotsByCompetitionID(competitionID, 
+                ShotType.COMPETITION);
+        //TODO add some handling of sighters
+        return TargetUtils.makeZoomedTarget(shots);
     }
 	
     @GET
