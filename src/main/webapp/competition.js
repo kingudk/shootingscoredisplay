@@ -73,7 +73,9 @@ function Competition(matchID, placeholder) {
     }
     
     function updateTargetImage() {
+        var targetUrl = "rest/public/getZoomedScoringTarget/?competitionID=" + ID;
         $("#" + ID + "-targetImg").hide();
+        $("#" + ID + "-targetImg").attr("data", targetUrl);
         $("#" + ID + "-targetImg").show();
     }
     
