@@ -102,7 +102,7 @@ function Competition(matchID, placeholder) {
         for(var i = 0; i < 10; i++) {
             var val = 0;
             $("#" + ID + "-LS" + (i+1)).empty();
-            $("#" + ID + "-LS" + (i+1) + "C").html(startIdx+i + ".");
+            $("#" + ID + "-LS" + (i+1) + "C").html(startIdx+i+1 + ".");
             if((startIdx+i) < shots.length) {
                 val = shots[startIdx+i];
                 $("#" + ID + "-LS" + (i+1)).html((val / 10).toFixed(1));
